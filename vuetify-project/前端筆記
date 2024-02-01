@@ -1,0 +1,18 @@
+layouts資料夾內的 FrontLayout.vue 指的是前端顯示頁面
+
+router 資料夾新增 index.js
+設定各個不同的路徑
+
+在 views 資料夾內新增的檔案為要增加的各個頁面以及功能
+; 類似 iframe
+HomeView.vue 首頁
+LoginView.vue 登入頁
+RegisterView.vue 註冊頁
+
+在前端資料夾內新增 .env 檔
+
+在 plugins 資料夾內新增 axios.js 的檔案
+
+plugins 資料夾內的 index.js 加上
+  import VuetifyUseDialog from 'vuetify-use-dialog'
+  .use(VuetifyUseDialog)

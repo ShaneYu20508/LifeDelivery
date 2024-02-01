@@ -1,0 +1,14 @@
+npm i -D pug sass @vue/eslint-config-standard @vue/language-plugin-pug eslint-plugin-vue-pug
+如果沒有要用 pug 語法的話部分套件可以不裝
+
+npm i [
+yup (物件的資料格式驗證)
+vee-validate (vue 的表單驗證工具)
+validator (信箱及其他驗證)
+; yup 以及 validator 的驗證方式不同，因此 email 的驗證方式要自己寫
+]
+
+npm i [
+  axios (發送請求)
+  vuetify-use-dialog (彈出通知)
+]
