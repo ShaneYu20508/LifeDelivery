@@ -12,3 +12,11 @@ npm i [
   axios (發送請求)
   vuetify-use-dialog (彈出通知)
 ]
+
+npm i pinia-plugin-persistedstate (把資料保存在 localstore 裡面，能保持登入狀態)
+  在 store 資料夾內的 index.js 內設定
+
+npm i -D vite-plugin-vue-devtools (vue開發工具)
+  在 vite.config 檔案內
+  引用 import VueDevTools from 'vite-plugin-vue-devtools'
+  並在 plugins 內新增 VueDevTools()

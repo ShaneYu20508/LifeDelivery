@@ -49,12 +49,12 @@ passport.use('jwt', new passportJWT.Strategy({
   secretOrKey: process.env.JWT_SECRET,
   // 之後的 callback 才能拿到請求資訊
   passReqToCallback: true,
-  // 略過過期檢查
+  // 略過過期檢查(預設)
   ignoreExpiration: true
   // async(請求的資訊, 請求出來的資料, )
 }, async (req, payload, done) => {
   try {
-    // 檢查過期狀態
+    // 檢查過期狀態(自己寫)
     // jwt 過期時間單位是秒，node.js 日期單位是毫秒，所以要 * 1000
     // payload.exp 是 jwt 檢驗出來的過期日期
     // new Date().getTime() 取當下日期
@@ -70,7 +70,7 @@ passport.use('jwt', new passportJWT.Strategy({
     const url = req.baseUrl + req.path
     // 如果過期，且路徑不是 users，且路徑的網址不是使用者的登出的話
     // 只允許 extend (舊換新)以及 logout(登出) 的路徑有過期
-    if (expired && url !== '/users/extend' && url !== 'users/logout') {
+    if (expired && url !== '/users/extend' && url !== '/users/logout') {
       // 拋出新錯誤
       throw new Error('EXPIRED')
     }
@@ -91,7 +91,9 @@ passport.use('jwt', new passportJWT.Strategy({
     return done(null, { user, token }, null)
     // 錯誤的話回傳錯誤訊息
   } catch (error) {
-    if (error.message === 'EXPIRED' || error.message === 'JWT') {
+    if (error.message === 'EXPIRED') {
+      return done(null, null, { message: 'JWT 過期' })
+    } else if (error.message === 'JWT') {
       return done(null, null, { message: 'JWT 無效' })
     } else {
       return done(null, null, { message: '未知錯誤' })

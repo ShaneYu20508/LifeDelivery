@@ -113,7 +113,7 @@ schema.pre('save', function (next) {
       user.password = bcrypt.hashSync(user.password, 10)
     }
   }
-  // 可以就跑下一個動作
+  // 可以的話就跑下一個動作
   next()
 })
 

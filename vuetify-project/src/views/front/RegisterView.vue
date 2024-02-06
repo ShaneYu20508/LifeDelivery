@@ -57,10 +57,12 @@
 import validator from 'validator'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
-import { api } from '@/plugins/axios'
 // 有 r 是跳頁，沒有 r 代表取路由的資訊
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
+import { useApi } from '@/composables/axios'
+
+const { api } = useApi()
 
 // 路由
 const router = useRouter()
@@ -83,9 +85,12 @@ const schema = yup.object({
     .string()
     .required('信箱為必填欄位')
     // .test(自訂驗證, 錯誤訊息, 驗證的 function)
-    .test('isEmail', '信箱格式錯誤', (value) => {
-      return validator.isEmail(value)
-    }),
+    .test(
+      'isEmail', '信箱格式錯誤',
+      (value) => {
+        return validator.isEmail(value)
+      }
+    ),
 
   // 密碼欄位
   password: yup

@@ -40,7 +40,7 @@ export const login = (req, res, next) => {
 
 // passport 的登入驗證完成後跳過來執行這邊
 export const jwt = (req, res, next) => {
-  passport.authenticate('jwt', { seseion: false }, (error, data, info) => {
+  passport.authenticate('jwt', { session: false }, (error, data, info) => {
     // 如果有錯或沒有資料
     if (error || !data) {
       if (info instanceof jsonwebtoken.JsonWebTokenError) {

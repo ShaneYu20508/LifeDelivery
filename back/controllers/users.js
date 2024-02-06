@@ -60,10 +60,7 @@ export const login = async (req, res) => {
         // 使用者權限
         role: req.user.role,
         // 購物車當中的商品 id 以及數量
-        cart: req.user.cart.reduce((total, current) => {
-          // 全部的總和加上目前的數量，起始值為 0
-          return total + current.quantity
-        }, 0)
+        cart: req.user.cartQuantity
       }
     })
   } catch (error) {
@@ -82,11 +79,11 @@ export const logout = async (req, res) => {
     req.tokens = req.user.tokens.filter(token => token !== req.token)
     await req.user.save()
     res.status(StatusCodes.OK).json({
-      success: false,
+      success: true,
       message: ''
     })
   } catch (error) {
-    res.status(StatusCodes.OK).json({
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
     })
@@ -111,7 +108,7 @@ export const extend = async (req, res) => {
       result: token
     })
   } catch (error) {
-    res.status(StatusCodes.OK).json({
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
     })
@@ -130,7 +127,7 @@ export const getProfile = (req, res) => {
         email: req.user.email,
         role: req.user.role,
         // cartQuantity 來自 models 的 users.js 中的 schema.virtual('cartQuantity')
-        cart: req.user.cart.cartQuantity
+        cart: req.user.cartQuantity
       }
     })
   } catch (error) {

@@ -16,3 +16,20 @@ RegisterView.vue 註冊頁
 plugins 資料夾內的 index.js 加上
   import VuetifyUseDialog from 'vuetify-use-dialog'
   .use(VuetifyUseDialog)
+
+在 src 資料夾內新增 composables 資料夾(組合式語法)
+  新增 axios.js 檔案
+  並且把 plugins 資料夾內的 axios.js 檔案刪除
+
+
+在註冊和登入頁引入
+import { useApi } from '@/composables/axios'
+const { api } = useApi()
+並且把 import { api } from '@/plugins/axios' 刪除
+
+將 store 的 app.js 改名為 user.js (儲存使用者資料)
+
+將後端的 enums(使用者權限) 資料夾複製過來
+
+在 views 資料夾內新增 admin 資料夾
+  新增 HomeView.vue 檔案(管理員前端)
