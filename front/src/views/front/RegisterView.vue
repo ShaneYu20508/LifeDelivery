@@ -84,7 +84,7 @@ const schema = yup.object({
   email: yup
     .string()
     .required('信箱為必填欄位')
-    // .test(自訂驗證, 錯誤訊息, 驗證的 function)
+    // .test(自訂驗證名稱, 錯誤訊息, 驗證的 function)
     .test(
       'isEmail', '信箱格式錯誤',
       (value) => {

@@ -31,5 +31,14 @@ const { api } = useApi()
 
 將後端的 enums(使用者權限) 資料夾複製過來
 
-在 views 資料夾內新增 admin 資料夾
-  新增 HomeView.vue 檔案(管理員前端)
+在 views 資料夾內新增 admin(管理員) 資料夾
+  新增 HomeView.vue(管理員前端) 檔案
+  新增 ProductsView.vue(產品管理) 檔案
+  新增 OrdersView.vue(訂單管理) 檔案
+
+在 plugins 資料夾內的 index.js 檔案內
+; 先在終端機下載  
+(上傳檢視美化)
+  import VueFileAgentNext from '@boindil/vue-file-agent-next'
+  import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
+  .use(VueFileAgentNext)

@@ -20,3 +20,6 @@ npm i -D vite-plugin-vue-devtools (vue開發工具)
   在 vite.config 檔案內
   引用 import VueDevTools from 'vite-plugin-vue-devtools'
   並在 plugins 內新增 VueDevTools()
+
+npm i @boindil/vue-file-agent-next(上傳檢視美化)
+  @boindil 為作者的名字
