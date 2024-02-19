@@ -20,7 +20,7 @@
     </VList>
   </VNavigationDrawer>
   <!-- 導覽列 -->
-  <VAppBar color="primary">
+  <VAppBar color="c1">
     <VContainer class="d-flex align-center">
       <VBtn to="/" :active="false">
         <VAppBarTitle>購物網
