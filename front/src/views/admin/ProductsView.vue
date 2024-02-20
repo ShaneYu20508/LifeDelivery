@@ -138,7 +138,6 @@ const openDialog = (item) => {
   } else {
     dialogId.value = ''
   }
-  dialogId.value = ''
   dialog.value = true
 }
 
@@ -195,7 +194,7 @@ const rawFileRecords = ref([])
 // 把 form 內的資料送出
 const submit = handleSubmit(async (values) => {
   // 如果有錯誤就不執行
-  if (fileRecords.value[0].error) return
+  if (fileRecords.value[0]?.error) return
   // 如果 idalogId 的 value 是空的，但是並沒有選擇任何檔案，也不執行
   if (dialogId.value === '' && fileRecords.value.length === 0) return
   try {
@@ -206,13 +205,16 @@ const submit = handleSubmit(async (values) => {
     for (const key in values) {
       fd.append(key, values[key])
     }
-    fd.append('image', fileRecords.value[0].file)
+    // 如果有東西才會 push 進去，沒有就給 undefined
+    if (fileRecords.value.length > 0) {
+      fd.append('image', fileRecords.value[0].file)
+    }
 
     // 新增和編輯的路徑不同，因此要增加判斷
     if (dialogId.value === '') {
       await apiAuth.post('/products', fd)
     } else {
-      await apiAuth.patch('/products' + dialogId.value, fd)
+      await apiAuth.patch('/products/' + dialogId.value, fd)
     }
 
     createSnackbar({
@@ -285,7 +287,7 @@ const tableLoadItems = async () => {
       params: {
         page: tablePage.value,
         itemsPerPage: tableItemsPerPage.value,
-        sortBy: tableSortBy.value[0]?.key || 'createAt',
+        sortBy: tableSortBy.value[0]?.key || 'createdAt',
         sortOrder: tableSortBy.value[0]?.order === 'asc' ? 1 : -1,
         search: tableSearch.value
       }

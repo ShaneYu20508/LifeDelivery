@@ -1,12 +1,11 @@
 <template>
-  <VContainer>
-    <VRow>
-      <VCol cols="12">
-        <h1>註冊</h1>
-      </VCol>
-      <VDivider></VDivider>
-      <!-- 分隔線 -->
-      <VCol cols="12">
+  <VRow id="register-home" class="bg-c1 align-center justify-center">
+    <VCol cols="12">
+      <v-card
+      class="pa-3 ma-auto"
+      width="450"
+      title="Register"
+      >
         <!-- :disable 送出的時候將表單停用，當表單 @submit 時，執行叫做 submit 的 function -->
         <VForm :disabled="isSubmitting" @submit.prevent="submit">
           <!-- counter 為計數器 --->
@@ -48,10 +47,16 @@
           </VTextField>
           <VBtn type="submit" color="green">註冊</VBtn>
         </VForm>
-      </VCol>
-    </VRow>
-  </VContainer>
+      </v-card>
+    </VCol>
+  </VRow>
 </template>
+
+<style scoped>
+#register-home{
+  height: calc(100% + 12px);
+}
+</style>
 
 <script setup>
 import validator from 'validator'

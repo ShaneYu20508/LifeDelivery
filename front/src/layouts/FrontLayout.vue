@@ -1,19 +1,19 @@
 <!-- 前端版面 -->
 <template>
   <!-- 手機版側欄 -->
-  <VNavigationDrawer v-model="drawer" temporary location="left" v-if="isMobile">
+  <VNavigationDrawer v-model="drawer" temporary location="left" v-if="isMobile" color="c1">
     <VList nav>
       <template v-for="item in navItems" :key="item.to">
         <VListItem :to="item.to" v-if="item.show">
           <template #prepend>
-            <VIcon :icon="item.icon"></VIcon>
+            <VIcon :icon="item.icon" ></VIcon>
           </template>
           <VListItemTitle>{{ item.text }}</VListItemTitle>
         </VListItem>
       </template>
       <VListItem v-if="user.isLogin" @click="logout">
         <template #prepend>
-          <VIcon icon="mdi-logout"></VIcon>
+          <VIcon icon="mdi-logout" ></VIcon>
         </template>
         <VListItemTitle>登出</VListItemTitle>
       </VListItem>
@@ -22,23 +22,23 @@
   <!-- 導覽列 -->
   <VAppBar color="c1">
     <VContainer class="d-flex align-center">
-      <VBtn to="/" :active="false">
-        <VAppBarTitle>購物網
+      <VBtn to="/" :active="false" color="c2">
+        <VAppBarTitle>Life Delivery
         </VAppBarTitle>
       </VBtn>
       <VSpacer></VSpacer>
 
       <!-- 手機版導覽列 -->
       <template v-if="isMobile">
-        <VAppBarNavIcon @click="drawer = true"></VAppBarNavIcon>
+        <VAppBarNavIcon @click="drawer = true" ></VAppBarNavIcon>
       </template>
 
       <!-- 電腦版導覽列 --->
       <template v-else>
         <template v-for="item in navItems" :key="item.to">
-          <VBtn :to="item.to" :prepend-icon="item.icon" v-if="item.show"> {{ item.text }}</VBtn>
+          <VBtn :to="item.to" :prepend-icon="item.icon"  v-if="item.show"> {{ item.text }}</VBtn>
         </template>
-        <VBtn prepend-icon="mdi-logout" v-if="user.isLogin" @click="logout">登出</VBtn>
+        <VBtn prepend-icon="mdi-logout" v-if="user.isLogin"  @click="logout">登出</VBtn>
       </template>
     </VContainer>
   </VAppBar>

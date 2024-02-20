@@ -1,37 +1,44 @@
 <template>
-<VContainer>
-  <VRow>
+  <VRow id="login-home" class="bg-c1 align-center justify-center">
     <VCol cols="12">
-      <h1>登入</h1>
-    </VCol>
-    <VDivider></VDivider>  <!-- 分隔線 -->
-    <VCol cols="12">
-      <!-- :disable 送出的時候將表單停用，當表單 @submit 時，執行叫做 submit 的 function -->
-      <VForm :disabled="isSubmitting" @submit.prevent="submit">
-        <!-- counter 為計數器 --->
-        <VTextField
-          label="帳號"
-          minlength="4"
-          maxlength="20"
-          counter
-          v-model="account.value.value"
-          :error-messages="account.errorMessage.value">
-        </VTextField>
-        <VTextField
-          label="密碼"
-          minlength="4"
-          maxlength="20"
-          counter
-          type="password"
-          v-model="password.value.value"
-          :error-messages="password.errorMessage.value">
-        </VTextField>
-        <VBtn type="submit" color="green">登入</VBtn>
-      </VForm>
+      <v-card
+        id="card"
+        class="pa-3 ma-auto"
+        width="450"
+        title="Login"
+      >
+        <!-- :disable 送出的時候將表單停用，當表單 @submit 時，執行叫做 submit 的 function -->
+        <VForm :disabled="isSubmitting" @submit.prevent="submit">
+          <!-- counter 為計數器 --->
+          <VTextField
+            label="帳號"
+            minlength="4"
+            maxlength="20"
+            counter
+            v-model="account.value.value"
+            :error-messages="account.errorMessage.value">
+          </VTextField>
+          <VTextField
+            label="密碼"
+            minlength="4"
+            maxlength="20"
+            counter
+            type="password"
+            v-model="password.value.value"
+            :error-messages="password.errorMessage.value">
+          </VTextField>
+          <VBtn type="submit" color="green">登入</VBtn>
+        </VForm>
+      </v-card>
     </VCol>
   </VRow>
-</VContainer>
 </template>
+
+<style scoped>
+#login-home{
+  height: calc(100% + 12px);
+}
+</style>
 
 <script setup>
 import { useForm, useField } from 'vee-validate'

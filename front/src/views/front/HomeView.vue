@@ -1,53 +1,41 @@
 <template>
-      <v-main id="scene" class="pa-0">
-        <v-img
-        id="big-pic"
-        data-depth="-0.6"
-        src="../../../imgs/detective.jfif"></v-img>
-        <v-img
-        id="sm-pic01"
-        data-depth="0.25"
-        src="../../../imgs/sm-pic01.jpg"></v-img>
-        <v-img
-        id="sm-pic02"
-        data-depth="0.5"
-        src="../../../imgs/sm-pic02.jpg"></v-img>
-      </v-main>
+    <v-row id="home" class="bg-c1">
+      <v-col class="d-none d-sm-none d-md-flex pa-0">
+        <v-main class="d-flex pa-0">
+          <v-img
+          id="big-pic"
+          src="../../../imgs/detective.jfif"></v-img>
+          <v-img
+          id="sm-pic01"
+          src="../../../imgs/sm-pic01.jpg"></v-img>
+          <v-img
+          id="sm-pic02"
+          src="../../../imgs/sm-pic02.jpg"></v-img>
+        </v-main>
+      </v-col>
+      <v-col class="xs-12 d-flex align-center pa-0">
+        <v-main class="text-center pa-0">
+          <h1 class="text-h2 text-c2">Life Delivery</h1>
+          <h2 class="text-overline text-c2">special service for special request</h2>
+        </v-main>
+      </v-col>
+    </v-row>
 </template>
 
 <style scoped>
-/* #home{
-  width: 100vw;
-  height: 100%;
-  background-color: #0c122a;
-  display: flex;
+#home{
+  height: calc(100% + 12px);
 }
-
-#scene{
-  width: 100vw;
-  height: 100%;
-  position: relative;
-}
-#big-pic{
-  width: 45%;
-  top: 15%;
-  left: 5%;
-  position: absolute;
-}
-
-#sm-pic01{
-  width: 15%;
-  top: 5%;
-  left: 7%;
-  position: absolute;
-  z-index: 1;
-}
-
-#sm-pic02{
-  width: 20%;
-  top: 65%;
-  left: 35%;
-  position: absolute;
-  z-index: 1;
-} */
 </style>
+
+<script>
+import { gsap } from 'gsap'
+
+export default {
+  mounted () {
+    gsap.from('h1', { duration: 1, opacity: 0, y: -50 })
+    gsap.from('h2', { duration: 1.5, opacity: 0, delay: 1.5 })
+  }
+}
+
+</script>
