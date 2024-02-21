@@ -10,13 +10,14 @@ import UserRole from '../enums/UserRole.js'
 
 // 購物車欄位
 const cartSchema = new Schema({
-  // 商品
+  // 商品 ID
   product: {
     // 型態: mongodb 資料的 ID
     type: ObjectId,
     ref: 'products',
     required: [true, '缺少商品欄位']
   },
+  // 商品數量
   quantity: {
     type: Number,
     required: [true, '缺少商品數量']

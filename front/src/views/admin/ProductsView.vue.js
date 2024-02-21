@@ -23,8 +23,20 @@ const dialog = ref(false)
 const dialogId = ref('')
 
 // 打開編輯對話框
-const openDialog = () => {
-  dialogId.value = ''
+const openDialog = (item) => {
+  // 如果已經有東西，代表正在編輯
+  // 自動將該商品的值代入
+  if (item) {
+    dialogId.value = item._id
+    name.value.value = item.name
+    price.value.value = item.price
+    description.value.value = item.description
+    category.value.value = item.category
+    sell.value.value = item.sell
+    // 如果 item 是空的，代表是新增
+  } else {
+    dialogId.value = ''
+  }
   dialog.value = true
 }
 
@@ -80,8 +92,10 @@ const rawFileRecords = ref([])
 
 // 把 form 內的資料送出
 const submit = handleSubmit(async (values) => {
-  // 如果長度是 0，或是有錯誤則 return
-  if (fileRecords.value.length === 0 || fileRecords.value[0].error) return
+  // 如果有錯誤就不執行
+  if (fileRecords.value[0]?.error) return
+  // 如果 idalogId 的 value 是空的，但是並沒有選擇任何檔案，也不執行
+  if (dialogId.value === '' && fileRecords.value.length === 0) return
   try {
     // 建立 FormData 物件
     // 使用 fd.append(欄位, 值) 將資料放進去
@@ -90,12 +104,21 @@ const submit = handleSubmit(async (values) => {
     for (const key in values) {
       fd.append(key, values[key])
     }
-    fd.append('image', fileRecords.value[0].file)
+    // 如果有東西才會 push 進去，沒有就給 undefined
+    if (fileRecords.value.length > 0) {
+      fd.append('image', fileRecords.value[0].file)
+    }
 
-    await apiAuth.post('/products', fd)
+    // 新增和編輯的路徑不同，因此要增加判斷
+    if (dialogId.value === '') {
+      await apiAuth.post('/products', fd)
+    } else {
+      await apiAuth.patch('/products/' + dialogId.value, fd)
+    }
 
     createSnackbar({
-      text: '新增成功',
+      // 如果 value = 0 代表新增，反之則為編輯
+      text: dialogId.value === '' ? '新增成功' : '編輯成功',
       showCloseButton: false,
       snackbarProps: {
         timeout: 2000,
@@ -104,6 +127,7 @@ const submit = handleSubmit(async (values) => {
       }
     })
     closeDialog()
+    tableApplySearch()
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -162,7 +186,7 @@ const tableLoadItems = async () => {
       params: {
         page: tablePage.value,
         itemsPerPage: tableItemsPerPage.value,
-        sortBy: tableSortBy.value[0]?.key || 'createAt',
+        sortBy: tableSortBy.value[0]?.key || 'createdAt',
         sortOrder: tableSortBy.value[0]?.order === 'asc' ? 1 : -1,
         search: tableSearch.value
       }
@@ -361,7 +385,12 @@ const __VLS_32 = __VLS_31({ ...{ onClick: {} as any, }, color: ("green"), }, ...
 const __VLS_33 = __VLS_pickFunctionalComponentCtx(__VLS_30, __VLS_32)!;
 let __VLS_34!: __VLS_NormalizeEmits<typeof __VLS_33.emit>;
 let __VLS_35 = { 'click': __VLS_pickEvent(__VLS_34['click'], ({} as __VLS_FunctionalComponentProps<typeof __VLS_31, typeof __VLS_32>).onClick) };
-__VLS_35 = { click: (__VLS_ctx.openDialog) };
+__VLS_35 = { click: $event => {
+__VLS_ctx.openDialog();
+// @ts-ignore
+[openDialog,];
+}
+ };
 (__VLS_33.slots!).default;
 }
 (__VLS_28.slots!).default;
@@ -409,10 +438,10 @@ let __VLS_56!: __VLS_NormalizeEmits<typeof __VLS_55.emit>;
 let __VLS_57 = { 'click:append': __VLS_pickEvent(__VLS_56['click:append'], ({} as __VLS_FunctionalComponentProps<typeof __VLS_53, typeof __VLS_54>)["onClick:append"]) };
 __VLS_57 = { "click:append": (__VLS_ctx.tableApplySearch) };
 let __VLS_58 = { 'keydown': __VLS_pickEvent(__VLS_56['keydown'], ({} as __VLS_FunctionalComponentProps<typeof __VLS_53, typeof __VLS_54>).onKeydown) };
-__VLS_58 = { keydown: (__VLS_ctx.table) };
+__VLS_58 = { keydown: (__VLS_ctx.tableApplySearch) };
 }
 // @ts-ignore
-[openDialog,tableItemsPerPage,tableSortBy,tablePage,tableProducts,tableHeaders,tableLoading,tableItemsLength,tableSearch,tableItemsPerPage,tableSortBy,tablePage,tableProducts,tableHeaders,tableLoading,tableItemsLength,tableSearch,tableItemsPerPage,tableSortBy,tablePage,tableProducts,tableHeaders,tableLoading,tableItemsLength,tableSearch,tableLoadItems,tableLoadItems,tableLoadItems,tableSearch,tableSearch,tableSearch,tableApplySearch,table,];
+[tableItemsPerPage,tableSortBy,tablePage,tableProducts,tableHeaders,tableLoading,tableItemsLength,tableSearch,tableItemsPerPage,tableSortBy,tablePage,tableProducts,tableHeaders,tableLoading,tableItemsLength,tableSearch,tableItemsPerPage,tableSortBy,tablePage,tableProducts,tableHeaders,tableLoading,tableItemsLength,tableSearch,tableLoadItems,tableLoadItems,tableLoadItems,tableSearch,tableSearch,tableSearch,tableApplySearch,tableApplySearch,];
 }
 }
 {

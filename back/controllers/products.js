@@ -88,7 +88,7 @@ export const get = async (req, res) => {
   try {
     const sortBy = req.query.sortBy || 'createdAt'
     // 設定預設的排序
-    const sortOrder = parseInt(req.query.sortOrder) || '-1'
+    const sortOrder = parseInt(req.query.sortOrder) || -1
     // 一頁有幾個
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 20
     // 抓第幾頁
@@ -116,8 +116,9 @@ export const get = async (req, res) => {
       .skip((page - 1) * itemsPerPage)
       .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
 
-    // estimatedDocumentCount() 計算總資料數
-    const total = await products.estimatedDocumentCount()
+    // estimatedDocumentCount() 計算總資料數，無法進行篩選
+    // countDocuments() 依照 () 內篩選計算總資料
+    const total = await products.countDocuments({ sell: true })
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -143,7 +144,7 @@ export const getId = async (req, res) => {
 
     if (!result) throw new Error('NOT FOUND')
 
-    res.status(StatusCodes.OK).josn({
+    res.status(StatusCodes.OK).json({
       success: true,
       message: '',
       result
@@ -181,8 +182,8 @@ export const edit = async (req, res) => {
     await products.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
-      success: false,
-      message: '查無商品'
+      success: true,
+      message: ''
     })
   } catch (error) {
     // ID 錯誤

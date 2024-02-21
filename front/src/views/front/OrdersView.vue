@@ -13,7 +13,6 @@
           <ul>
             <li v-for="cart in item.cart" :key="cart._id">
               | {{ cart.product.name }} * {{ cart.quantity }}
-
             </li>
           </ul>
         </template>
@@ -34,7 +33,6 @@ const createSnackbar = useSnackbar()
 const orders = ref([])
 const headers = [
   { title: '訂單編號', key: '_id' },
-  { title: '帳號', key: 'user.account' },
   { title: '日期', key: 'createdAt' },
   { title: '商品', key: 'cart', sortable: false },
   {
@@ -50,7 +48,7 @@ const headers = [
 
 onMounted(async () => {
   try {
-    const { data } = await apiAuth.get('/orders/all')
+    const { data } = await apiAuth.get('/orders')
     orders.value.push(...data.result)
   } catch (error) {
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'

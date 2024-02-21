@@ -7,7 +7,7 @@ import { useUserStore } from '@/store/user'
 // 路由
 const routes = [
   {
-    // 首頁
+    // 使用者頁面
     path: '/',
     component: () => import('@/layouts/FrontLayout.vue'),
     children: [
@@ -25,6 +25,7 @@ const routes = [
         }
       },
       {
+        // 註冊頁
         path: 'register',
         name: 'Register',
         component: () => import('@/views/front/RegisterView.vue'),
@@ -32,16 +33,46 @@ const routes = [
           title: '購物網 | 註冊',
           login: false,
           admin: false
-
         }
       },
       {
+        // 登入頁
         path: 'login',
         name: 'Login',
         component: () => import('@/views/front/LoginView.vue'),
         meta: {
           title: '購物網 | 登入',
           login: false,
+          admin: false
+        }
+      },
+      {
+        path: 'products/:id',
+        name: 'Product',
+        component: () => import('@/views/front/ProductView.vue'),
+        meta: {
+          title: '購物網 | 商品',
+          login: false,
+          admin: false
+        }
+      },
+      {
+        path: 'cart',
+        name: 'Cart',
+        component: () => import('@/views/front/CartView.vue'),
+        meta: {
+          title: '購物網 | 購物車',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('@/views/front/OrdersView.vue'),
+        meta: {
+          title: '購物網 | 訂單',
+          login: true,
           admin: false
         }
       }

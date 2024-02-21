@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as auth from '../middlewares/auth.js'
-import { create, edit, getAll, get } from '../controllers/products.js'
+import { create, edit, getAll, get, getId } from '../controllers/products.js'
 import upload from '../middlewares/upload.js'
 import admin from '../middlewares/admin.js'
 
@@ -13,6 +13,7 @@ router.get('/all', auth.jwt, admin, getAll)
 router.patch('/:id', auth.jwt, admin, upload, edit)
 // 取首頁的商品
 router.get('/', get)
+router.get('/:id', getId)
 
 export default router
 // 要回 index.js 內補上 import

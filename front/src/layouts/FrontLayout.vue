@@ -8,6 +8,9 @@
           <template #prepend>
             <VIcon :icon="item.icon" ></VIcon>
           </template>
+          <template #append>
+            <v-badge color="error" :content="user.cart" v-if="item.to ==='/cart'" inline></v-badge>
+          </template>
           <VListItemTitle>{{ item.text }}</VListItemTitle>
         </VListItem>
       </template>
@@ -36,7 +39,9 @@
       <!-- 電腦版導覽列 --->
       <template v-else>
         <template v-for="item in navItems" :key="item.to">
-          <VBtn :to="item.to" :prepend-icon="item.icon"  v-if="item.show"> {{ item.text }}</VBtn>
+          <VBtn :to="item.to" :prepend-icon="item.icon"  v-if="item.show"> {{ item.text }}
+              <v-badge color="error" :content="user.cart" v-if="item.to ==='/cart'" floating></v-badge>
+          </VBtn>
         </template>
         <VBtn prepend-icon="mdi-logout" v-if="user.isLogin"  @click="logout">登出</VBtn>
       </template>
@@ -44,7 +49,7 @@
   </VAppBar>
 <!-- 頁面內容 類似 iframe -->
 <VMain>
-  <RouterView>
+  <RouterView :key="$route.path            ">
   </RouterView>
 </VMain>
 </template>
@@ -67,6 +72,7 @@ const router = useRouter()
 const createSnackbar = useSnackbar()
 
 const user = useUserStore()
+
 // 手機版判斷式
 const { mobile } = useDisplay()
 const isMobile = computed(() => mobile.value)
