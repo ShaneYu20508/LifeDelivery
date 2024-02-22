@@ -24,7 +24,7 @@
     "yup": "^1.3.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^4.6.2",
     "@vue/eslint-config-standard": "^8.0.1",
     "@vue/language-plugin-pug": "^1.8.27",
     "eslint": "^8.22.0",

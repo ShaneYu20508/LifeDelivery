@@ -4,32 +4,30 @@ import { Schema, model } from 'mongoose'
 const schema = new Schema({
   name: {
     type: String,
-    required: [true, '缺少商品名稱']
+    required: [true, '缺少任務標題']
   },
   price: {
     type: Number,
-    required: [true, '缺少商品價格']
+    required: [true, '缺少任務報酬']
   },
-  image: {
+  requiredPeople: {
+    type: Number,
+    required: [true, '缺少需求人數']
+  },
+  isPublic: {
+    type: Boolean,
+    required: [true, '缺少任務狀態']
+  },
+  mailman: {
     type: String,
-    required: [true, '缺少商品圖片']
+    required: function() {
+      return !this.isPublic;
+    }
   },
   description: {
     type: String,
-    required: [true, '缺少商品說明']
+    required: [true, '缺少任務說明']
   },
-  category: {
-    type: String,
-    required: [true, '缺少商品分類'],
-    enum: {
-      values: ['衣服', '食品', '3C', '遊戲'],
-      message: '商品分類錯誤'
-    }
-  },
-  sell: {
-    type: Boolean,
-    required: [true, '缺少商品上架狀態']
-  }
 }, {
   // 出現最近商品建立以及更新的日期
   timestamps: true,
