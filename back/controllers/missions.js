@@ -1,5 +1,5 @@
 // 引入產品的 models
-import products from '../models/products.js'
+import missions from '../models/missions.js'
 // 引入狀態碼
 import { StatusCodes } from 'http-status-codes'
 
@@ -9,7 +9,7 @@ export const create = async (req, res) => {
   try {
     // req.file.path 為圖片路徑
     req.body.image = req.file.path
-    const result = await products.create(req.body)
+    const result = await missions.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -48,7 +48,7 @@ export const getAll = async (req, res) => {
     // 搜尋文字
     const regex = new RegExp(req.query.search || '', 'i')
 
-    const data = await products
+    const data = await missions
       .find({
         $or: [
           { name: regex },
@@ -67,7 +67,7 @@ export const getAll = async (req, res) => {
       .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
 
     // estimatedDocumentCount() 計算總資料數
-    const total = await products.estimatedDocumentCount()
+    const total = await missions.estimatedDocumentCount()
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -96,7 +96,7 @@ export const get = async (req, res) => {
     // 搜尋文字
     const regex = new RegExp(req.query.search || '', 'i')
 
-    const data = await products
+    const data = await missions
       .find({
         // 只看得到有上架的產品
         sell: true,
@@ -118,7 +118,7 @@ export const get = async (req, res) => {
 
     // estimatedDocumentCount() 計算總資料數，無法進行篩選
     // countDocuments() 依照 () 內篩選計算總資料
-    const total = await products.countDocuments({ sell: true })
+    const total = await missions.countDocuments({ sell: true })
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -140,7 +140,7 @@ export const getId = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    const result = await products.findById(req.params.id)
+    const result = await missions.findById(req.params.id)
 
     if (!result) throw new Error('NOT FOUND')
 
@@ -179,7 +179,7 @@ export const edit = async (req, res) => {
 
     // 去 商品的 model.執行以 ID 查詢並更新的指令(搜尋條件: 網址的 id, 更新內容: req.body, {跑驗證}).如果沒查到東西(拋出新錯誤('NOT FOUND'))
     // .orFail 這樣就不用寫一個新的 if
-    await products.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
+    await missions.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
       success: true,

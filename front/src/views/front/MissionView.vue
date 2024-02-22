@@ -2,11 +2,11 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h1 class='text-center'>商品管理</h1>
+        <h1 class='text-center'>任務管理</h1>
       </v-col>
       <v-divider><!-- 分隔線  --></v-divider>
       <v-col cols="12">
-        <v-btn color="green" @click="openDialog()">新增商品</v-btn>
+        <v-btn color="green" @click="openDialog()">新增任務</v-btn>
       </v-col>
       <v-col cols="12">
         <!-- 上方排的排序列  -->
@@ -16,7 +16,7 @@
           v-model:items-per-page="tableItemsPerPage"
           v-model:sort-by="tableSortBy"
           v-model:page="tablePage"
-          :items="tableProducts"
+          :items="tableMissions"
           :headers="tableHeaders"
           :loading="tableLoading"
           :items-length="tableItemsLength"
@@ -57,31 +57,43 @@
   <v-dialog v-model="dialog" persistent width="500px"> <!-- persistent 代表點擊對話框外不會使其消失 -->
     <v-form :disabled="isSubmitting" @submit.prevent="submit">
       <v-card>
-        <v-card-title>{{ dialogId === '' ? '新增商品' : '編輯商品' }}</v-card-title>
+        <v-card-title>{{ dialogId === '' ? '新增任務' : '編輯任務' }}</v-card-title>
         <v-card-text>
-          <v-text-field
-            label="名稱"
-            v-model="name.value.value"
-            :error-messages="name.errorMessage.value"></v-text-field>
-          <v-text-field
-            label="價格"
-            type="number" min="0"
-            v-model="price.value.value"
-            :error-messages="price.errorMessage.value"></v-text-field>
-          <v-select
-            label="分類"
-            :items="categories"
-            v-model="category.value.value"
-            :error-messages="category.errorMessage.value"></v-select>
-          <v-checkbox
-            label="上架"
-            v-model="sell.value.value"
-            :error-messages="sell.errorMessage.value"></v-checkbox>
-          <v-textarea
+          <v-row>
+            <v-col cols="7">
+              <v-text-field
+              label="名稱"
+              v-model="name.value.value"
+              :error-messages="name.errorMessage.value"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+              label="報酬/milion"
+              type="number" min="0"
+              v-model="price.value.value"
+              :error-messages="price.errorMessage.value"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-select
+              label="公開/私人"
+              :items="categories"
+              v-model="category.value.value"
+              :error-messages="category.errorMessage.value"></v-select>
+            </v-col>
+            <v-col>
+              <v-text-field
+              label="需求人數"
+              v-model="sell.value.value"
+              :error-messages="sell.errorMessage.value"></v-text-field>
+            </v-col>
+          </v-row>
+            <v-textarea
             label="說明"
             v-model="description.value.value"
             :error-messages="description.errorMessage.value"></v-textarea>
-          <vue-file-agent
+            <vue-file-agent
             v-model="fileRecords"
             v-model:raw-model-value="rawFileRecords"
             accept="image/jpeg,image/png"
@@ -120,13 +132,13 @@ const fileAgent = ref(null)
 // 表單對話框的開啟狀態
 const dialog = ref(false)
 // 用來判斷要新增還是編輯
-// 表單對話框正在編輯的商品 ID，空的話代表新增商品
+// 表單對話框正在編輯的任務 ID，空的話代表新增任務
 const dialogId = ref('')
 
 // 打開編輯對話框
 const openDialog = (item) => {
   // 如果已經有東西，代表正在編輯
-  // 自動將該商品的值代入
+  // 自動將該任務的值代入
   if (item) {
     dialogId.value = item._id
     name.value.value = item.name
@@ -149,7 +161,7 @@ const closeDialog = () => {
 }
 
 // 分類
-const categories = ['衣服', '食品', '3C', '遊戲']
+const categories = ['公開', '私人']
 
 const schema = yup.object({
   name: yup
@@ -212,9 +224,9 @@ const submit = handleSubmit(async (values) => {
 
     // 新增和編輯的路徑不同，因此要增加判斷
     if (dialogId.value === '') {
-      await apiAuth.post('/products', fd)
+      await apiAuth.post('/missions', fd)
     } else {
-      await apiAuth.patch('/products/' + dialogId.value, fd)
+      await apiAuth.patch('/missions/' + dialogId.value, fd)
     }
 
     createSnackbar({
@@ -256,7 +268,7 @@ const tableSortBy = ref([
 const tablePage = ref(1)
 
 // 表格商品資料陣列
-const tableProducts = ref([1])
+const tableMissions = ref([1])
 
 // 設定表格欄位
 // sortable 為是否能依據該項目排序
@@ -283,7 +295,7 @@ const tableLoadItems = async () => {
   // 請求之前先設定表格為載入中
   tableLoading.value = true
   try {
-    const { data } = await apiAuth.get('/products/all', {
+    const { data } = await apiAuth.get('/missions/all', {
       params: {
         page: tablePage.value,
         itemsPerPage: tableItemsPerPage.value,
@@ -292,7 +304,7 @@ const tableLoadItems = async () => {
         search: tableSearch.value
       }
     })
-    tableProducts.value.splice(0, tableProducts.value.length, ...data.result.data)
+    tableMissions.value.splice(0, tableMissions.value.length, ...data.result.data)
     tableItemsLength.value = data.result.total
   } catch (error) {
     console.log(error)

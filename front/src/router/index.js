@@ -21,7 +21,8 @@ const routes = [
           // 非登入狀態也可以看
           login: false,
           // 非管理員也可以看
-          admin: false
+          admin: false,
+          mailman: false
         }
       },
       {
@@ -32,7 +33,8 @@ const routes = [
         meta: {
           title: '購物網 | 註冊',
           login: false,
-          admin: false
+          admin: false,
+          mailman: false
         }
       },
       {
@@ -43,25 +45,46 @@ const routes = [
         meta: {
           title: '購物網 | 登入',
           login: false,
-          admin: false
+          admin: false,
+          mailman: false
         }
       },
       {
-        path: 'products/:id',
-        name: 'Product',
-        component: () => import('@/views/front/ProductView.vue'),
+        path: 'mission',
+        name: 'mission',
+        component: () => import('@/views/front/MissionView.vue'),
         meta: {
-          title: '購物網 | 商品',
+          title: '購物網 | 發布任務',
           login: false,
           admin: false
         }
       },
+      // {
+      //   path: 'products/:id',
+      //   name: 'Product',
+      //   component: () => import('@/views/front/ProductView.vue'),
+      //   meta: {
+      //     title: '購物網 | 商品',
+      //     login: false,
+      //     admin: false
+      //   }
+      // },
       {
         path: 'cart',
         name: 'Cart',
         component: () => import('@/views/front/CartView.vue'),
         meta: {
           title: '購物網 | 購物車',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: 'postmission',
+        name: 'PostMission',
+        component: () => import('@/views/front/PostMission.vue'),
+        meta: {
+          title: '購物網 | 發布任務',
           login: true,
           admin: false
         }
@@ -94,11 +117,11 @@ const routes = [
         }
       },
       {
-        path: 'products',
-        name: 'AdminProducts',
-        component: () => import('@/views/admin/ProductsView.vue'),
+        path: 'missions',
+        name: 'AdminMissions',
+        component: () => import('@/views/admin/MissionsView.vue'),
         meta: {
-          title: '購物網 | 商品管理',
+          title: '購物網 | 任務列表',
           login: true,
           admin: true
         }
@@ -108,7 +131,17 @@ const routes = [
         name: 'AdminOrders',
         component: () => import('@/views/admin/OrdersView.vue'),
         meta: {
-          title: '購物網 | 訂單管理',
+          title: '購物網 | 任務管理',
+          login: true,
+          admin: true
+        }
+      },
+      {
+        path: 'members',
+        name: 'AdminMembers',
+        component: () => import('@/views/admin/MembersView.vue'),
+        meta: {
+          title: '購物網 | 會員管理',
           login: true,
           admin: true
         }

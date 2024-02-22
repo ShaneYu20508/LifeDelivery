@@ -54,8 +54,8 @@ onMounted(async () => {
 })
 </script>
 
-    <style scoped>
-    .product-card{
-      opacity: 0
-    }
-    </style>
+<style scoped>
+.product-card{
+  opacity: 0
+}
+</style>

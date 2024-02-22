@@ -11,7 +11,7 @@
         <VForm :disabled="isSubmitting" @submit.prevent="submit">
           <!-- counter 為計數器 --->
           <VTextField
-            label="帳號"
+            label="使用者名稱"
             minlength="4"
             maxlength="20"
             counter
@@ -43,7 +43,7 @@
 <script setup>
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
-// 有 r 是跳頁，沒有 r 代表取路由的資訊
+// useRoute(r) 有 r 是跳頁，沒有 r 代表取路由的資訊
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 
@@ -68,9 +68,9 @@ const schema = yup.object({
   // 文字
     .string()
   // 必填
-    .required('帳號為必填欄位')
-    .min(4, '使用者帳號長度不符')
-    .max(20, '使用者帳號長度不符'),
+    .required('名稱為必填欄位')
+    .min(4, '使用者名稱長度不符')
+    .max(20, '使用者名稱長度不符'),
 
   // 密碼欄位
   password: yup

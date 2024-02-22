@@ -3,7 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import routeUsers from './routes/users.js'
-import routeProducts from './routes/products.js'
+import routeMissions from './routes/missions.js'
 import { StatusCodes } from 'http-status-codes'
 import './passport/passport.js'
 
@@ -41,7 +41,7 @@ app.use((_, req, res, next) => {
 })
 // 如果請求成功到這行就會進去了
 app.use('/users', routeUsers)
-app.use('/products', routeProducts)
+app.use('/missions', routeMissions)
 
 // 代表所有請求方式
 // * 代表任意路徑

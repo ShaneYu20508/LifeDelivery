@@ -1,52 +1,52 @@
 <!-- 前端版面 -->
 <template>
-  <!-- 手機版側欄 -->
-  <VNavigationDrawer v-model="drawer" temporary location="left" v-if="isMobile" color="c1">
-    <VList nav>
-      <template v-for="item in navItems" :key="item.to">
-        <VListItem :to="item.to" v-if="item.show">
-          <template #prepend>
-            <VIcon :icon="item.icon" ></VIcon>
-          </template>
-          <template #append>
-            <v-badge color="error" :content="user.cart" v-if="item.to ==='/cart'" inline></v-badge>
-          </template>
-          <VListItemTitle>{{ item.text }}</VListItemTitle>
-        </VListItem>
-      </template>
-      <VListItem v-if="user.isLogin" @click="logout">
+<!-- 手機版側欄 --------------------------------------------------------------------------------------------->
+<VNavigationDrawer v-model="drawer" temporary location="left" v-if="isMobile" color="c1">
+  <VList nav>
+    <template v-for="item in navItems" :key="item.to">
+      <VListItem :to="item.to" v-if="item.show">
         <template #prepend>
-          <VIcon icon="mdi-logout" ></VIcon>
+          <VIcon :icon="item.icon" ></VIcon>
         </template>
-        <VListItemTitle>登出</VListItemTitle>
+        <template #append>
+          <v-badge color="error" :content="user.cart" v-if="item.to ==='/cart'" inline></v-badge>
+        </template>
+        <VListItemTitle>{{ item.text }}</VListItemTitle>
       </VListItem>
-    </VList>
-  </VNavigationDrawer>
-  <!-- 導覽列 -->
-  <VAppBar color="c1">
-    <VContainer class="d-flex align-center">
-      <VBtn to="/" :active="false" color="c2">
-        <VAppBarTitle>Life Delivery
-        </VAppBarTitle>
-      </VBtn>
-      <VSpacer></VSpacer>
-
-      <!-- 手機版導覽列 -->
-      <template v-if="isMobile">
-        <VAppBarNavIcon @click="drawer = true" ></VAppBarNavIcon>
+    </template>
+    <VListItem v-if="user.isLogin" @click="logout">
+      <template #prepend>
+        <VIcon icon="mdi-logout" ></VIcon>
       </template>
+      <VListItemTitle>登出</VListItemTitle>
+    </VListItem>
+  </VList>
+</VNavigationDrawer>
+<!-- 導覽列 --------------------------------------------------------------------------------------------------->
+<VAppBar color="c1">
+  <VContainer class="d-flex align-center">
+    <VBtn to="/" :active="false" color="c2">
+      <VAppBarTitle>Life Delivery
+      </VAppBarTitle>
+    </VBtn>
+    <VSpacer></VSpacer>
 
-      <!-- 電腦版導覽列 --->
-      <template v-else>
-        <template v-for="item in navItems" :key="item.to">
-          <VBtn :to="item.to" :prepend-icon="item.icon"  v-if="item.show"> {{ item.text }}
-              <v-badge color="error" :content="user.cart" v-if="item.to ==='/cart'" floating></v-badge>
-          </VBtn>
-        </template>
-        <VBtn prepend-icon="mdi-logout" v-if="user.isLogin"  @click="logout">登出</VBtn>
+    <!-- 手機版導覽列 ------------------------------------------------------------------------------------------>
+    <template v-if="isMobile">
+      <VAppBarNavIcon @click="drawer = true" ></VAppBarNavIcon>
+    </template>
+
+    <!-- 電腦版導覽列 -----------------------------------------------------------------------------------------00--->
+    <template v-else>
+      <template v-for="item in navItems" :key="item.to">
+        <VBtn class="text-h6" :to="item.to" :prepend-icon="item.icon"  v-if="item.show"> {{ item.text }}
+            <v-badge color="error" :content="user.cart" v-if="item.to ==='/cart'" floating></v-badge>
+        </VBtn>
       </template>
-    </VContainer>
-  </VAppBar>
+      <VBtn class="text-h6" prepend-icon="mdi-logout" v-if="user.isLogin" @click="logout">登出</VBtn>
+    </template>
+  </VContainer>
+</VAppBar>
 <!-- 頁面內容 類似 iframe -->
 <VMain>
   <RouterView :key="$route.path            ">
@@ -84,6 +84,7 @@ const navItems = computed(() => {
   return [
     { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLogin },
     { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin },
+    { to: '/mission', text: '發布任務', icon: 'mdi-list-box', show: user.isLogin },
     { to: '/cart', text: '購物車', icon: 'mdi-cart', show: user.isLogin },
     { to: '/orders', text: '訂單', icon: 'mdi-list-box', show: user.isLogin },
     { to: '/admin', text: '管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin }
