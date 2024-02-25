@@ -1,37 +1,35 @@
 import { Schema, model } from 'mongoose'
 
-// 定義欄位
 const schema = new Schema({
-  name: {
+  title: {
     type: String,
-    required: [true, '缺少任務標題']
+    required: [true, '請輸入任務標題']
   },
-  price: {
+  // publisher: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   required: [true, '缺少任務發布者']
+  // },
+  reward: {
     type: Number,
-    required: [true, '缺少任務報酬']
-  },
-  requiredPeople: {
-    type: Number,
-    required: [true, '缺少需求人數']
-  },
-  isPublic: {
-    type: Boolean,
-    required: [true, '缺少任務狀態']
-  },
-  mailman: {
-    type: String,
-    required: function() {
-      return !this.isPublic;
-    }
+    required: [true, '缺少任務報酬'],
+    min:[1, '任務報酬不能小於1']
   },
   description: {
     type: String,
-    required: [true, '缺少任務說明']
+    required: [true, '缺少任務詳情']
+  },
+  status: {
+    type: String,
+    required: [true, '缺少任務狀態'],
+    enum: {
+      values: ['公開', '私人'],
+      message: '任務狀態錯誤'
+    }
   },
 }, {
-  // 出現最近商品建立以及更新的日期
   timestamps: true,
   versionKey: false
 })
 
-export default model('products', schema)
+export default model('missions', schema)

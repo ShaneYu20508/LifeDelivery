@@ -16,43 +16,51 @@ const cartSchema = new Schema({
 })
 
 const schema = new Schema({
+  image: {
+    type: String,
+    required: [true, '缺少幹員圖片']
+  },
   account: {
     type: String,
-    required: [true, '缺少使用者帳號'],
-    minlength: [4, '使用者帳號長度不符'],
-    maxlength: [20, '使用者帳號長度不符'],
+    required: [true, '缺少代號'],
+    minlength: [1, '代號長度不符'],
+    maxlength: [20, '代號長度不符'],
     unique: true,
     validate: {
       validator (value) {
         return validator.isAlphanumeric(value)
       },
-      message: '使用者帳號格式錯誤'
+      message: '代號格式錯誤'
     }
   },
   email: {
     type: String,
-    required: [true, '缺少使用者信箱'],
+    required: [true, '信箱為必填欄位'],
     unique: true,
     validate: {
       validator (value) {
         return validator.isEmail(value)
       },
-      message: '使用者信箱格式錯誤'
+      message: '信箱格式錯誤'
     }
   },
   password: {
     type: String,
-    required: [true, '缺少使用者密碼']
+    required: [true, '缺少密碼']
   },
   tokens: {
     type: [String]
   },
-  cart: {
-    type: [cartSchema]
+  experience: {
+    type: String,
+  },
+  skills: {
+    type: String,
+    required: [true, '缺少幹員專長']
   },
   role: {
     type: Number,
-    default: UserRole.USER
+    default: UserRole.MAILMAN
   }
 }, {
   timestamps: true,
@@ -81,4 +89,4 @@ schema.pre('save', function (next) {
   next()
 })
 
-export default model('users', schema)
+export default model('mailmans', schema)

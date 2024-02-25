@@ -1,16 +1,12 @@
-<template>
-<v-card class="product-card">
-  <v-img :src="image" cover height="200"></v-img>
-  <v-card-title>
-    <router-link class="text-primary text-decoration-none" :to="'/products/' + _id">{{ name }}
-    </router-link>
-  </v-card-title>
-  <v-card-subtitle>{{ price }}</v-card-subtitle>
-  <v-card-text style="white-space: pre;"> {{ description }}</v-card-text>
-  <v-card-actions>
-    <v-btn color="primary" prepend-icon="mdi-cart" @click="addCart">加入購物車</v-btn>
-  </v-card-actions>
-</v-card>
+<template lang="pug">
+VCard.product-card
+  VImg(:src="image" cover height="200")
+  VCardTitle
+    RouterLink.text-primary.text-decoration-none(:to="'/products/' + _id") {{ name }}
+  VCardSubtitle ${{ price }}
+  VCardText(style="white-space: pre;") {{ description }}
+  VCardActions
+    VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart") 加入購物車
 </template>
 
 <script setup>
@@ -24,12 +20,9 @@ const user = useUserStore()
 const createSnackbar = useSnackbar()
 const router = useRouter()
 
-// 定義卡片當中的項目
 const props = defineProps(['_id', 'category', 'description', 'image', 'name', 'price', 'sell'])
 
-// 加入購物車
 const addCart = async () => {
-  // 如果沒有登入，則帶到登入頁面
   if (!user.isLogin) {
     router.push('/login')
     return
