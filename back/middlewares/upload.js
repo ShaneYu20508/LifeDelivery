@@ -11,13 +11,13 @@ cloudinary.config({
 
 const upload = multer({
   storage: new CloudinaryStorage({ cloudinary }),
-  // fileFilter (req, file, callback) {
-  //   if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
-  //     callback(null, true)
-  //   } else {
-  //     callback(new multer.MulterError('LIMIT_FILE_FORMAT'), false)
-  //   }
-  // },
+  fileFilter (req, file, callback) {
+    if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
+      callback(null, true)
+    } else {
+      callback(new multer.MulterError('LIMIT_FILE_FORMAT'), false)
+    }
+  },
   limits: {
     fileSize: 1024 * 1024
   }

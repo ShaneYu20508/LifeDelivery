@@ -1,19 +1,7 @@
-import { Schema, model, ObjectId, Error } from 'mongoose'
+import { Schema, model, Error } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import UserRole from '../enums/UserRole.js'
-
-const cartSchema = new Schema({
-  product: {
-    type: ObjectId,
-    ref: 'products',
-    required: [true, '缺少商品欄位']
-  },
-  quantity: {
-    type: Number,
-    required: [true, '缺少商品數量']
-  }
-})
 
 const schema = new Schema({
   image: {
@@ -22,16 +10,23 @@ const schema = new Schema({
   },
   account: {
     type: String,
-    required: [true, '缺少代號'],
-    minlength: [1, '代號長度不符'],
-    maxlength: [20, '代號長度不符'],
+    required: [true, '請輸入帳號'],
+    minlength: [4, '帳號長度不符'],
+    maxlength: [20, '帳號長度不符'],
     unique: true,
     validate: {
       validator (value) {
         return validator.isAlphanumeric(value)
       },
-      message: '代號格式錯誤'
+      message: '帳號格式錯誤'
     }
+  },
+  code: {
+    type: String,
+    required: [true, '缺少幹員代號'],
+    minlength: [1, '幹員代號長度不符'],
+    maxlength: [20, '幹員代號長度不符'],
+    unique: true
   },
   email: {
     type: String,
@@ -52,7 +47,7 @@ const schema = new Schema({
     type: [String]
   },
   experience: {
-    type: String,
+    type: String
   },
   skills: {
     type: String,

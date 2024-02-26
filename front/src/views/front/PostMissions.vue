@@ -29,6 +29,8 @@ VContainer
             @click:append="tableApplySearch"
             @keydown.enter="tableApplySearch"
           )
+        template(#[`item.image`]="{ item }")
+          VImg(:src="item.image" height="50px")
         template(#[`item.sell`]="{ item }")
           VIcon(icon="mdi-check" v-if="item.sell")
         template(#[`item.edit`]="{ item }")
@@ -55,11 +57,6 @@ VDialog(v-model="dialog" persistent width="500px")
           v-model="status.value.value"
           :error-messages="status.errorMessage.value"
         )
-        //- VTextField(
-        //-   label="任務發布者"
-        //-   v-model="publisher.value.value"
-        //-   :error-messages="publisher.errorMessage.value"
-        //- )
         VTextarea(
           label="任務說明"
           v-model="description.value.value"
@@ -81,7 +78,7 @@ VDialog(v-model="dialog" persistent width="500px")
         VBtn(color="red" :disabled="isSubmitting" @click="closeDialog") 取消
         VBtn(color="green" type="submit" :loading="isSubmitting") 送出
 </template>
-  
+
 <script setup>
 import { ref } from 'vue'
 import * as yup from 'yup'
@@ -120,7 +117,7 @@ const closeDialog = () => {
 }
 
 // 狀態
-const isPublic = ['公開', '私人'];
+const isPublic = ['公開', '私人']
 
 // 表單驗證
 const schema = yup.object({
@@ -132,34 +129,28 @@ const schema = yup.object({
     .typeError('任務報酬格式錯誤')
     .required('請輸入任務報酬')
     .min(1, '任務報酬不能小於 1'),
-  // publisher: yup
-  //   .string()
-  //   .required('請輸入任務發布者'),
   status: yup
     .string()
     .required('請選擇任務狀態')
-    .test('is-public', '請選擇任務狀態', value => isPublic.includes(value)),
+    .test('is-public', '請選擇任務狀態', (value) => isPublic.includes(value)),
   description: yup
     .string()
-    .required('請輸入任務說明'),
-});
+    .required('請輸入任務說明')
+})
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({
   validationSchema: schema,
   initialValues: {
     title: '',
     reward: 0,
-    // publisher: '',
-    status: '',
-    description: '',
-  },
-});
-const title = useField('title');
-const reward = useField('reward');
-// const publisher = useField('publisher');
-const status = useField('status');
-const description = useField('description');
-
+    status: '公開',
+    description: ''
+  }
+})
+const title = useField('title')
+const reward = useField('reward')
+const status = useField('status')
+const description = useField('description')
 
 const fileRecords = ref([])
 const rawFileRecords = ref([])
@@ -214,20 +205,19 @@ const submit = handleSubmit(async (values) => {
 // 表格每頁幾個
 const tableItemsPerPage = ref(10)
 // 表格排序
-const tableSortBy = ref([
-  { key: 'createdAt', order: 'desc' }
-])
+const tableSortBy = ref([{ key: 'createdAt', order: 'desc' }])
 // 表格頁碼
 const tablePage = ref(1)
 // 表格商品資料陣列
 const tableProducts = ref([])
 // 表格欄位設定
 const tableHeaders = [
-  { title: '任務標題', align: 'center', sortable: true, key: 'title' },
-  { title: '任務報酬/m', align: 'center', sortable: true, key: 'reward' },
-  { title: '任務狀態', align: 'center', sortable: true, key: 'status' },
-  { title: '任務說明', align: 'center', sortable: true, key: 'description' },
-  { title: '編輯', align: 'center', sortable: false, key: 'edit' }
+  { title: '圖片', align: 'center', sortable: false, key: 'image' },
+  { title: '任務標題', align: 'left', sortable: true, key: 'title' },
+  { title: '任務報酬/m', align: 'left', sortable: true, key: 'reward' },
+  { title: '任務狀態', align: 'left', sortable: true, key: 'status' },
+  { title: '任務說明', align: 'left', sortable: true, key: 'description' },
+  { title: '編輯', align: 'left', sortable: false, key: 'edit' }
 ]
 // 表格載入狀態
 const tableLoading = ref(true)
@@ -240,6 +230,9 @@ const tableLoadItems = async () => {
   tableLoading.value = true
   try {
     const { data } = await apiAuth.get('/missions/all', {
+      headers: {
+        Authorization: 'Bearer YOUR_ACCESS_TOKEN'
+      },
       params: {
         page: tablePage.value,
         itemsPerPage: tableItemsPerPage.value,
@@ -248,7 +241,11 @@ const tableLoadItems = async () => {
         search: tableSearch.value
       }
     })
-    tableProducts.value.splice(0, tableProducts.value.length, ...data.result.data)
+    tableProducts.value.splice(
+      0,
+      tableProducts.value.length,
+      ...data.result.data
+    )
     tableItemsLength.value = data.result.total
   } catch (error) {
     console.log(error)

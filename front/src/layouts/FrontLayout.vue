@@ -85,8 +85,10 @@ const navItems = computed(() => {
     { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLogin },
     { to: '/join', text: '加入我們', icon: 'mdi-login', show: !user.isLogin },
     { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin },
-    { to: '/post', text: '發布任務', icon: 'mdi-list-box', show: user.isLogin },
-    { to: '/cart', text: '購物車', icon: 'mdi-cart', show: user.isLogin },
+    { to: '/post', text: '發布任務', icon: 'mdi-list-box', show: user.isLogin && !user.isMailman },
+    { to: '/mailmans', text: '幹員列表', icon: 'mdi-account', show: user.isLogin && !user.isMailman },
+    { to: '/missionlist', text: '任務清單', icon: 'mdi-list-box', show: user.isLogin && user.isMailman },
+    { to: '/missionpage', text: '執行中任務', icon: 'mdi-list-box', show: user.isLogin && user.isMailman },
     { to: '/orders', text: '訂單', icon: 'mdi-receipt', show: user.isAdmin },
     { to: '/users', text: '會員', icon: 'mdi-account', show: user.isAdmin },
     { to: '/admin', text: '管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin }

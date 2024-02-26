@@ -31,6 +31,10 @@ export const useUserStore = defineStore('user', () => {
     return role.value === UserRole.ADMIN
   })
 
+  const isMailman = computed(() => {
+    return role.value === UserRole.MAILMAN
+  })
+
   const getProfile = async () => {
     if (token.value.length === 0) return
 
@@ -60,6 +64,7 @@ export const useUserStore = defineStore('user', () => {
     logout,
     isLogin,
     isAdmin,
+    isMailman,
     getProfile
   }
 }, {

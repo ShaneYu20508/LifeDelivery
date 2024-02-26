@@ -133,7 +133,7 @@ export const editCart = async (req, res) => {
     } else {
       // 檢查商品是否存在或已下架
       const mission = await missions.findById(req.body.mission).orFail(new Error('NOT FOUND'))
-      if (!mission.sell) {
+      if (mission.status !== '公開') {
         throw new Error('NOT FOUND')
       } else {
         req.user.cart.push({

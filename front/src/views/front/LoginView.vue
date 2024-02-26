@@ -5,11 +5,24 @@
         <!-- :disable 送出的時候將表單停用，當表單 @submit 時，執行叫做 submit 的 function -->
         <VForm :disabled="isSubmitting" @submit.prevent="submit">
           <!-- counter 為計數器 --->
-          <VTextField label="使用者名稱" minlength="4" maxlength="20" counter v-model="account.value.value"
-            :error-messages="account.errorMessage.value">
+          <VTextField
+            label="使用者名稱"
+            minlength="4"
+            maxlength="20"
+            counter
+            v-model="account.value.value"
+            :error-messages="account.errorMessage.value"
+          >
           </VTextField>
-          <VTextField label="密碼" minlength="4" maxlength="20" counter type="password" v-model="password.value.value"
-            :error-messages="password.errorMessage.value">
+          <VTextField
+            label="密碼"
+            minlength="4"
+            maxlength="20"
+            counter
+            type="password"
+            v-model="password.value.value"
+            :error-messages="password.errorMessage.value"
+          >
           </VTextField>
           <VBtn type="submit" color="green">登入</VBtn>
         </VForm>
@@ -17,8 +30,6 @@
     </VCol>
   </VRow>
 </template>
-
-
 
 <script setup>
 import { useForm, useField } from 'vee-validate'

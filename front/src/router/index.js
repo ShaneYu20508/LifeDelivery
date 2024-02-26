@@ -50,13 +50,45 @@ const routes = [
       {
         path: 'post',
         name: 'Post',
-        component: () => import('@/views/front/Missions.vue'),
+        component: () => import('@/views/front/PostMissions.vue'),
         meta: {
           title: 'Life Delivery | 發布任務',
-          login: false,
+          login: true,
           admin: false
         }
       },
+      {
+        path: 'mailmans',
+        name: 'MailMans',
+        component: () => import('@/views/front/MailMans.vue'),
+        meta: {
+          title: 'Life Delivery | 幹員列表',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: 'missionlist',
+        name: 'MissionsList',
+        component: () => import('@/views/mailman/MissionList.vue'),
+        meta: {
+          title: 'Life Delivery | 任務清單',
+          login: true,
+          admin: false,
+          mailman: true
+        }
+      },
+      {
+        path: 'missionpage',
+        name: 'Missions',
+        component: () => import('@/views/mailman/MissionPage.vue'),
+        meta: {
+          title: 'Life Delivery | 執行中任務',
+          login: true,
+          admin: false,
+          mailman: true
+        }
+      }
     ]
   },
   {

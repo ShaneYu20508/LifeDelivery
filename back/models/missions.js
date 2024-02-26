@@ -13,11 +13,15 @@ const schema = new Schema({
   reward: {
     type: Number,
     required: [true, '缺少任務報酬'],
-    min:[1, '任務報酬不能小於1']
+    min: [1, '任務報酬不能小於1']
   },
   description: {
     type: String,
     required: [true, '缺少任務詳情']
+  },
+  image: {
+    type: String,
+    required: [true, '缺少商品圖片']
   },
   status: {
     type: String,
@@ -26,7 +30,7 @@ const schema = new Schema({
       values: ['公開', '私人'],
       message: '任務狀態錯誤'
     }
-  },
+  }
 }, {
   timestamps: true,
   versionKey: false

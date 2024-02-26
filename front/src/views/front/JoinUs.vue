@@ -5,7 +5,7 @@
       <v-card class="pa-3 ma-auto" width="600" title="Join Us">
         <v-card-text>
           <v-row>
-            <v-col>
+            <v-col cols="5">
               <vue-file-agent class="ma-2"
               v-model="fileRecords"
               v-model:rawModelValue="rawFileRecords"
@@ -18,11 +18,16 @@
               ref="fileAgent"
               ></vue-file-agent>
             </v-col>
-            <v-col cols="5" class="d-flex justify-center align-center text-center">
-              <v-text-field
-              label="幹員代號"
+            <v-col class="d-flex justify-center align-center flex-column">
+              <v-text-field class="w-100"
+              label="帳號" counter
+              minlength="4" maxlength="20"
               v-model="account.value.value"
               :error-messages="account.errorMessage.value"></v-text-field>
+              <v-text-field class="w-100"
+              label="幹員代號"
+              v-model="code.value.value"
+              :error-messages="code.errorMessage.value"></v-text-field>
             </v-col>
           </v-row>
           <v-text-field
@@ -48,7 +53,7 @@
         </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" :disabled="isSubmitting" @click="closeDialog">取消</v-btn>
+        <v-btn color="red" :disabled="isSubmitting">取消</v-btn>
         <v-btn color="green" type="submit" :loading="isSubmitting">送出</v-btn>
       </v-card-actions>
       </v-card>
@@ -56,30 +61,36 @@
   </v-col>
 </v-row>
 
-
 </template>
 
 <script setup>
 import validator from 'validator'
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import * as yup from 'yup'
-import { useRouter } from 'vue-router'
 import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 
 const { apiAuth } = useApi()
 
-const router = useRouter()
 const createSnackbar = useSnackbar()
+const router = useRouter()
+
+const fileAgent = ref(null)
 
 // 表單驗證
 const schema = yup.object({
   account: yup
     .string()
+    .required('請輸入帳號')
+    .min(4, '帳號長度不符')
+    .max(20, '帳號長度不符'),
+  code: yup
+    .string()
     .required('請輸入幹員代號')
-    .min(1, '代號長度不符')
-    .max(20, '代號長度不符'),
+    .min(1, '幹員代號長度不符')
+    .max(20, '幹員代號長度不符'),
   email: yup
     .string()
     .required('信箱為必填欄位')
@@ -105,32 +116,51 @@ const schema = yup.object({
     .required('請輸入工作經驗'),
   skills: yup
     .string()
-    .required('請輸入幹員專長'),
-});
+    .required('請輸入幹員專長')
+})
 
-const { handleSubmit, isSubmitting, resetForm } = useForm({
+const { handleSubmit, isSubmitting } = useForm({
   validationSchema: schema,
   initialValues: {
     account: '',
+    code: '',
     email: '',
     password: '',
     experience: '',
-    skills: '',
-  },
-});
-const account = useField('account');
-const email = useField('email');
-const password = useField('password');
+    skills: ''
+  }
+})
+const account = useField('account')
+const code = useField('code')
+const email = useField('email')
+const password = useField('password')
 const passwordConfirm = useField('passwordConfirm')
-const experience = useField('experience');
-const skills = useField('skills');
+const experience = useField('experience')
+const skills = useField('skills')
+
+const fileRecords = ref([])
+const rawFileRecords = ref([])
 
 const submit = handleSubmit(async (values) => {
+  if (fileRecords.value[0]?.error) return
+  if (fileRecords.value.length === 0) return
   try {
-    await apiAuth.post('/mailmans', {
+    const fd = new FormData()
+    for (const key in values) {
+      fd.append(key, values[key])
+    }
+
+    if (fileRecords.value.length > 0) {
+      fd.append('image', fileRecords.value[0].file)
+    }
+
+    await apiAuth.post('/mailmans', fd)
+
+    await apiAuth.post('/users', {
       account: values.account,
       email: values.email,
-      password: values.password
+      password: values.password,
+      role: 2
     })
     createSnackbar({
       text: '申請成功',
@@ -156,6 +186,5 @@ const submit = handleSubmit(async (values) => {
     })
   }
 })
-
 
 </script>

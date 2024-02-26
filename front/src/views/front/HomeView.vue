@@ -17,13 +17,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
-import { useApi } from '@/composables/axios'
-import { useSnackbar } from 'vuetify-use-dialog'
+import { onMounted, nextTick } from 'vue'
 import gsap from 'gsap'
-
-const { api } = useApi()
-const createSnackbar = useSnackbar()
 
 onMounted(() => {
   nextTick(() => {

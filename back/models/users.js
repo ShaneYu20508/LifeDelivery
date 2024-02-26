@@ -48,7 +48,8 @@ const schema = new Schema({
     type: [String]
   },
   cart: {
-    type: [cartSchema]
+    type: [cartSchema],
+    length: [2, '購物車商品數量超過上限']
   },
   role: {
     type: Number,
