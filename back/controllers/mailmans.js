@@ -82,7 +82,7 @@ export const get = async (req, res) => {
 
     const data = await mailmans
       .find({
-        isPublic: '公開',
+        pass:true,
         $or: [
           { name: regex },
           { description: regex }

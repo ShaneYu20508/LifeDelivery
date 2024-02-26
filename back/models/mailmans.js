@@ -56,6 +56,10 @@ const schema = new Schema({
   role: {
     type: Number,
     default: UserRole.MAILMAN
+  },
+  pass:{
+    type: Boolean,
+    required: [true, '幹員未登錄']
   }
 }, {
   timestamps: true,

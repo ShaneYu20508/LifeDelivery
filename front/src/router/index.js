@@ -106,11 +106,11 @@ const routes = [
         }
       },
       {
-        path: 'products',
-        name: 'AdminProducts',
-        component: () => import('@/views/admin/ProductsView.vue'),
+        path: 'MailmanPass',
+        name: 'MailmanPass',
+        component: () => import('@/views/admin/MailmanPass.vue'),
         meta: {
-          title: '購物網 | 商品管理',
+          title: 'Life Delivery | 幹員管理',
           login: true,
           admin: true
         }

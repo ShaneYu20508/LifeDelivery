@@ -28,9 +28,10 @@ import { computed } from 'vue'
 const user = useUserStore()
 
 const navItems = [
-  { to: '/admin/missions', text: '任務列表', icon: 'mdi-shopping' },
-  { to: '/admin/orders', text: '任務管理', icon: 'mdi-list-box' },
-  { to: '/admin/members', text: '會員管理', icon: 'mdi-account' },
+  // { to: '/admin/missions', text: '任務列表', icon: 'mdi-shopping' },
+  { to: '/admin/MailmanPass', text: '幹員管理', icon: 'mdi-account' },
+  // { to: '/admin/orders', text: '任務管理', icon: 'mdi-list-box' },
+  // { to: '/admin/members', text: '會員管理', icon: 'mdi-account' },
   { to: '/', text: '回首頁', icon: 'mdi-home' }
 ]
 

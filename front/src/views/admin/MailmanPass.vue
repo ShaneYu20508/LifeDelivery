@@ -1,66 +1,26 @@
 <template>
-<v-row class="bg-c1 align-center justify-center h-100">
-  <v-col cols="12">
-    <v-form :disabled="isSubmitting" @submit.prevent="submit">
-      <v-card class="pa-3 ma-auto" width="600" title="Join Us">
-        <v-card-text>
-          <v-row>
-            <v-col cols="5">
-              <vue-file-agent class="ma-2"
-              v-model="fileRecords"
-              v-model:rawModelValue="rawFileRecords"
-              accept="image/jpeg,image/png"
-              deletable
-              :error-text="{type: '檔案格式不支援', size: '檔案超過 1MB 大小限制'}"
-              help-text="選擇檔案或拖曳到這裡"
-              :max-files="1"
-              max-size="1MB"
-              ref="fileAgent"
-              ></vue-file-agent>
-            </v-col>
-            <v-col class="d-flex justify-center align-center flex-column">
-              <v-text-field class="w-100"
-              label="帳號" counter
-              minlength="4" maxlength="20"
-              v-model="account.value.value"
-              :error-messages="account.errorMessage.value"></v-text-field>
-              <v-text-field class="w-100"
-              label="幹員代號"
-              v-model="code.value.value"
-              :error-messages="code.errorMessage.value"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-text-field
-            label="信箱"
-            v-model="email.value.value"
-            :error-messages="email.errorMessage.value"></v-text-field>
-          <v-text-field
-            label="密碼"
-            v-model="password.value.value" counter minlength="4" maxlength="20"
-            :error-messages="password.errorMessage.value"></v-text-field>
-          <v-text-field
-            label="確認密碼"
-            v-model="passwordConfirm.value.value" counter minlength="4" maxlength="20"
-            :error-messages="passwordConfirm.errorMessage.value"></v-text-field>
-          <v-text-field
-            label="幹員專長"
-            v-model="skills.value.value"
-            :error-messages="skills.errorMessage.value"></v-text-field>
-          <v-textarea
-            label="工作經驗"
-            v-model="experience.value.value"
-            :error-messages="experience.errorMessage.value"></v-textarea>
-        </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="red" :disabled="isSubmitting">取消</v-btn>
-        <v-btn color="green" type="submit" :loading="isSubmitting">送出</v-btn>
-      </v-card-actions>
-      </v-card>
-    </v-form>
-  </v-col>
-</v-row>
-
+<v-container>
+  <v-row>
+    <v-col cols="12">
+      <h1 class="text-center">幹員管理</h1>
+    </v-col>
+    <v-divider></v-divider>
+    <v-data-table-server         
+      v-model:items-per-page="tableItemsPerPage"
+      v-model:sort-by="tableSortBy"
+      v-model:page="tablePage"
+      :items="tableProducts"
+      :headers="tableHeaders"
+      :loading="tableLoading"
+      :items-length="tableItemsLength"
+      :search="tableSearch"
+      @update:items-per-page="tableLoadItems"
+      @update:sort-by="tableLoadItems"
+      @update:page="tableLoadItems"
+      hover>
+    </v-data-table-server>
+  </v-row>
+</v-container>
 </template>
 
 <script setup>
@@ -190,5 +150,66 @@ const submit = handleSubmit(async (values) => {
     })
   }
 })
+
+const tableItemsPerPage = ref(10)
+const tableSortBy = ref([
+  {key:'createAt', order:'desc'}
+])
+
+const tablePage = ref(1)
+
+const tableProducts = ref([])
+
+const tableHeaders = [
+  { text: '幹員代號', key: 'code' },
+  { text: '帳號', key: 'account' },
+  { text: '信箱', key: 'email' },
+  { text: '工作經驗', key: 'experience' },
+  { text: '專長', key: 'skills' },
+  { text: '狀態', key: 'pass' },
+  { text: '操作', key: 'actions', sortable: false }
+]
+
+const tableLoading = ref(true)
+
+const tableItemsLength = ref(0)
+
+const tableSearch = ref('')
+
+const tableLoadItems = async () => {
+  tableLoading.value = true
+  try {
+    const {data} = await apiAuth.get('/mailmans/all', {
+      params: {
+        page: tablePage.value,
+        itemsPerPage: tableItemsPerPage.value,
+        sortBy: tableSortBy.value[0]?.key || 'createdAt',
+        sortOrder: tableSortBy.value[0]?.order === 'asc' ? 1 : -1,
+        search: tableSearch.value
+      }
+    })
+    tableProducts.value.splice(0, tableProducts.value.length, ...data.result.data)
+    tableItemsLength.value = data.result.total
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+  tableLoading.value = false
+}
+tableLoadItems()
+// 表格套用搜尋
+const tableApplySearch = () => {
+  tablePage.value = 1
+  tableLoadItems()
+}
 
 </script>
