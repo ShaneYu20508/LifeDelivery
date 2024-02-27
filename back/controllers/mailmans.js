@@ -39,8 +39,8 @@ export const getAll = async (req, res) => {
     const data = await mailmans
       .find({
         $or: [
-          { name: regex },
-          { description: regex }
+          { code: regex },
+          { skills: regex }
         ]
       })
       // const text = 'a'
@@ -82,10 +82,10 @@ export const get = async (req, res) => {
 
     const data = await mailmans
       .find({
-        pass:true,
+        pass: true,
         $or: [
-          { name: regex },
-          { description: regex }
+          { code: regex },
+          { skills: regex }
         ]
       })
       // const text = 'a'

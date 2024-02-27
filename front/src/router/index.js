@@ -106,7 +106,7 @@ const routes = [
         }
       },
       {
-        path: 'MailmanPass',
+        path: 'mailmanpass',
         name: 'MailmanPass',
         component: () => import('@/views/admin/MailmanPass.vue'),
         meta: {

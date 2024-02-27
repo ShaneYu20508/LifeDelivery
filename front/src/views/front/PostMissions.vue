@@ -102,7 +102,7 @@ const openDialog = (item) => {
     title.value.value = item.title
     reward.value.value = item.reward
     description.value.value = item.description
-    status.value.value = item.category
+    status.value.value = item.isPublic
     // publisher.value.value = item.publisher
   } else {
     dialogId.value = ''

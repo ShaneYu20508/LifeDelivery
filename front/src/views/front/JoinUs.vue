@@ -46,6 +46,10 @@
             label="幹員專長"
             v-model="skills.value.value"
             :error-messages="skills.errorMessage.value"></v-text-field>
+          <v-checkbox
+            label="是否通過幹員考核"
+            v-model="pass.value.value" v-show="user.isAdmin"
+            :error-messages="pass.errorMessage.value"></v-checkbox>
           <v-textarea
             label="工作經驗"
             v-model="experience.value.value"
@@ -53,7 +57,6 @@
         </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" :disabled="isSubmitting">取消</v-btn>
         <v-btn color="green" type="submit" :loading="isSubmitting">送出</v-btn>
       </v-card-actions>
       </v-card>
@@ -71,6 +74,9 @@ import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+import { useUserStore } from '@/store/user'
+
+const user = useUserStore()
 
 const { apiAuth } = useApi()
 
@@ -130,7 +136,7 @@ const { handleSubmit, isSubmitting } = useForm({
     password: '',
     experience: '',
     skills: '',
-    pass: true
+    pass: false
   }
 })
 const account = useField('account')

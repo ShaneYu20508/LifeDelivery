@@ -57,7 +57,7 @@ const schema = new Schema({
     type: Number,
     default: UserRole.MAILMAN
   },
-  pass:{
+  pass: {
     type: Boolean,
     required: [true, '幹員未登錄']
   }
