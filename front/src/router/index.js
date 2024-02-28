@@ -60,9 +60,19 @@ const routes = [
       {
         path: 'mailmans',
         name: 'MailMans',
-        component: () => import('@/views/front/MailMans.vue'),
+        component: () => import('@/views/front/MailManlist.vue'),
         meta: {
           title: 'Life Delivery | 幹員列表',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: 'mailmans/:id',
+        name: 'Mailman',
+        component: () => import('@/views/front/MailmanView.vue'),
+        meta: {
+          title: 'Life Delivery | 幹員',
           login: true,
           admin: false
         }

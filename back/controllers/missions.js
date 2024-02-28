@@ -82,9 +82,9 @@ export const get = async (req, res) => {
 
     const data = await missions
       .find({
-        isPublic: '公開',
+        status: '公開',
         $or: [
-          { name: regex },
+          { title: regex },
           { description: regex }
         ]
       })

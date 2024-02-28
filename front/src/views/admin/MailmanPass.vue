@@ -292,5 +292,4 @@ const tableApplySearch = () => {
   tablePage.value = 1
   tableLoadItems()
 }
-mongodb+srv://grantgmgm:grantgmg1@cluster0.c7eyvjb.mongodb.net/
 </script>

@@ -13,20 +13,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-
+import MailmanCard from '@/components/MailmanCard.vue'
 import gsap from 'gsap'
 
-const { api } = useApi()
+const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 
 const mailmans = ref([])
 
 onMounted(async () => {
   try {
-    const { data } = await api.get('/mailmans', {
+    const { data } = await apiAuth.get('/mailmans', {
       params: {
         itemsPerPage: -1
       }
@@ -52,7 +52,8 @@ onMounted(async () => {
 </script>
 
 <style>
-.mailman-card {
-  opacity: 0;
+.mailman-card{
+  opacity: 0
 }
+
 </style>
